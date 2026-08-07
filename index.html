@@ -33,12 +33,20 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         }
 
+        /* 大标题样式 */
         h1 {
             font-size: 1.8rem;
             color: #1a1a1a;
             margin-bottom: 25px;
             font-weight: 700;
             line-height: 1.4;
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.3s ease;
+        }
+
+        h1:hover {
+            color: #6b46c1;
         }
 
         p {
@@ -47,14 +55,36 @@
             color: #4a5568;
         }
 
-        .tag {
-            display: inline-block;
-            background-color: #f3e8ff;
-            color: #6b46c1;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.95rem;
+        /* 图片容器样式 */
+        .image-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer; 
+            /* 添加过渡效果，实现透明度渐变 */
+            transition: opacity 0.4s ease, transform 0.3s ease;
+            opacity: 1;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.05);
+        }
+
+        /* 渐隐淡出的状态类 */
+        .fade-out {
+            opacity: 0;
+        }
+
+        .image-tip {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: #a0aec0;
         }
 
         .footer {
@@ -70,13 +100,55 @@
 <body>
 
     <div class="container">
-        <!-- 页面内的标题 -->
-        <h1>嗨，你好</h1>
+        <!-- 页面内的大标题 -->
+        <h1 id="mainTitle" onclick="switchContent()">奋斗の凯哥</h1>
+
+        <!-- 图片切换部分 -->
+        <div class="image-container">
+            <img id="toggleImg" src="https://wsxiao93ovo.github.io/Xiao93/123.jpg" alt="图片切换" onclick="switchContent()">
+            <p class="image-tip">点击图片或大标题可切换</p>
+        </div>
+
         <!-- 页脚 -->
         <div class="footer">
             &copy; 小玖叁
         </div>
     </div>
+
+    <!-- JavaScript 逻辑：实现带渐隐效果的切换 -->
+    <script>
+        const img1 = "https://wsxiao93ovo.github.io/Xiao93/123.jpg";
+        const img2 = "https://wsxiao93ovo.github.io/Xiao93/128.jpg";
+
+        const title1 = "奋斗の凯哥";
+        const title2 = "凯哥の诱惑";
+
+        let isFirstState = true; 
+
+        function switchContent() {
+            const titleElement = document.getElementById("mainTitle");
+            const imgElement = document.getElementById("toggleImg");
+
+            // 1. 先让图片透明度变为 0（开始渐隐）
+            imgElement.classList.add("fade-out");
+
+            // 2. 等待渐隐动画结束后（400毫秒），更换图片和标题，再让其显现
+            setTimeout(() => {
+                if (isFirstState) {
+                    titleElement.textContent = title2;
+                    imgElement.src = img2;
+                } else {
+                    titleElement.textContent = title1;
+                    imgElement.src = img1;
+                }
+                
+                // 3. 移除渐隐类，让新图片淡入显示
+                imgElement.classList.remove("fade-out");
+                
+                isFirstState = !isFirstState; 
+            }, 400); // 时间与 CSS 中的 transition 保持一致
+        }
+    </script>
 
 </body>
 </html>
